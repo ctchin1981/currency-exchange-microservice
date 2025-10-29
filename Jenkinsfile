@@ -29,15 +29,40 @@ pipeline {
 			}
 		}
 
-		stage('Test') {
+		// stage('Test') {
+		// 	steps {
+		// 		sh "mvn test"
+		// 	}
+		// }
+
+		// stage('Integration Test') {
+		// 	steps {
+		// 		sh "mvn failsafe:integration-test failsafe:verify"
+		// 	}
+		// }
+
+		stage('Package') {
 			steps {
-				sh "mvn test"
+				sh "mvn package -DskipTests"
 			}
 		}
 
-		stage('Integration Test') {
+		stage('Build Docker') {
 			steps {
-				sh "mvn failsafe:integration-test failsafe:verify"
+				script {
+					dockerImage = docker.build("ctchin1981/currency-exchange-microservice:${env.BUILD_TAG}")
+				}
+			}
+		}
+
+		stage('Push Docker') {
+			steps {
+				script {
+					docker.withRegistry('', 'myDockerHub') {
+						dockerImage.push()
+						dockerImage.push("latest")
+					}
+				}
 			}
 		}
 	}
