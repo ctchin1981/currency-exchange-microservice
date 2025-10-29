@@ -1,3 +1,5 @@
+def dockerImage 
+
 pipeline {
 	agent any
 	//agent { docker { image 'maven:3.6.3' } }
@@ -50,7 +52,7 @@ pipeline {
 		stage('Build Docker') {
 			steps {
 				script {
-					def dockerImage = docker.build("ctchin1981/currency-exchange-microservice:${env.BUILD_TAG}")
+					dockerImage = docker.build("ctchin1981/currency-exchange-microservice:${env.BUILD_TAG}")
 				}
 			}
 		}
