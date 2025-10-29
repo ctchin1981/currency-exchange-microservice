@@ -50,7 +50,7 @@ pipeline {
 		stage('Build Docker') {
 			steps {
 				script {
-					dockerImage = docker.build("ctchin1981/currency-exchange-microservice:${env.BUILD_TAG}")
+					def dockerImage = docker.build("ctchin1981/currency-exchange-microservice:${env.BUILD_TAG}")
 				}
 			}
 		}
